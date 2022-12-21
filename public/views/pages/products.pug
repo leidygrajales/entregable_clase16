@@ -1,0 +1,30 @@
+extends ../main
+block index
+  div(class="d-flex flex-grow-1 flex-column bg-light p-3 rounded border")
+    h3(class="text-center text-primary")="PRODUCTS"
+    form(id="formAgregarProducto" class="row align-items-center gy-3 mt-0")
+      div(class="input-group")
+        div(class="form-floating col-auto")
+          input(type="text" class="form-control" id="title" placeholder="Title" name="title" autocomplete="off" required)
+          label="Title" 
+        div(class="form-floating col-auto")
+          input(type="number" class="form-control" id="price" placeholder="Price" name="price" autocomplete="off" required)
+          label="Price" 
+      div(class="input-group")
+        div(class="form-floating col-auto")
+          input(type="number" class="form-control" id="stock" placeholder="Stock" name="stock" autocomplete="off" required)
+          label="Stock" 
+        div(class="form-floating col-auto")
+          input(type="text" class="form-control" id="thumbnail" placeholder="Picture URL" name="thumbnail" autocomplete="off" required)
+          label="Thumbnail"
+      div(class="input-group")
+        div(class="form-floating")
+          textarea(class="form-control" id="description" placeholder="Description" name="description" autocomplete="off" required)
+          label="Comments"
+      div(class="input-group")
+        button(type="submit" class="btn btn-primary")="SEND"
+    hr
+
+    div(id="productos")
+    
+  script(src='./js/productos.js')

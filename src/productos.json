@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "timestamp": 1670816186185,
+    "title": "Labial líquido",
+    "price": "10",
+    "stock": "150",
+    "thumbnail": "https://cdns3-3.primor.eu/86199-thickbox/superstay-matte-ink-labial-liquido.jpg",
+    "description": "Labial líquido color rosado"
+  },
+  {
+    "id": 2,
+    "timestamp": 1670827367457,
+    "title": "Labial en barra",
+    "price": "5",
+    "stock": "100",
+    "thumbnail": "https://assets.atida.com/m/5065c1b8ea6d3fcd/Product_High-Maybelline-Color-Sensational-Pintalabios-333-Hot-Chase.png",
+    "description": "labial en barra"
+  },
+  {
+    "id": 3,
+    "timestamp": 1670827443313,
+    "title": "Labial 2 en 1",
+    "price": "12",
+    "stock": "50",
+    "thumbnail": "https://www.maybelline.es/~/media/mny/es/lips/products/superstay-24h/superstay-24h-nuevas-imagenes/maybelline-espana-labios-superstay-24h-510-red-passion-a.jpg",
+    "description": "labial 2  en 1"
+  }
+]

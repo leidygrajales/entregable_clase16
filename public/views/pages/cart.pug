@@ -1,0 +1,23 @@
+extends ../main
+block index
+    div(class="d-flex flex-grow-1 flex-column bg-light p-3 rounded border")
+        h3(class="text-center text-primary")="ADD PRODUCTS TO CART"
+
+        div(class="row align-items-center gy-3 mt-0")
+            div(class="input-group")
+                div(class="form-floating col-auto")
+                    select(class="form-select" id="comboCarritos" name="comboCarritos")
+                    label="Cart" 
+                div(class="form-floating col-auto")
+                    select(class="form-select" id="comboProductos" name="comboProductos") 
+                    label="Product" 
+            div(class="input-group")
+                button(class="btn btn-primary" id="btnAgregarAlCarrito")="Add Product"
+            
+            hr
+
+            div(id="cart")
+            div(class="input-group")
+                button(class="btn btn-primary" id="btnCrearCart")="Create cart"
+
+    script(src='./js/carrito.js')
