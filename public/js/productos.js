@@ -1,34 +1,34 @@
 const productosApi = {
-    get: () => {
-        return fetch('/api/productos')
-            .then(data => data.json())
-    },
-    post: (nuevoProd) => {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(nuevoProd)
-        }
-        return fetch('/api/productos', options)
-    },
-    put: (idProd, nuevoProd) => {
-        const options = {
-            method: 'PUT',
-            body: JSON.stringify(nuevoProd),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }
-        return fetch(`/api/productos/${idProd}`, options)
-    },
-    delete: (idProd) => {
-        const options = {
-            method: 'DELETE'
-        }
-        return fetch(`/api/productos/${idProd}`, options)
-    },
+  get: () => {
+    return fetch('/api/productos')
+      .then(data => data.json())
+  },
+  post: (nuevoProd) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(nuevoProd)
+    }
+    return fetch('/api/productos', options)
+  },
+  put: (idProd, nuevoProd) => {
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(nuevoProd),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+    return fetch(`/api/productos/${idProd}`, options)
+  },
+  delete: (idProd) => {
+    const options = {
+      method: 'DELETE'
+    }
+    return fetch(`/api/productos/${idProd}`, options)
+  },
 }
 
 //-------------------------------------------------------------------
@@ -36,90 +36,90 @@ const productosApi = {
 const formAgregarProducto = document.getElementById('formAgregarProducto')
 
 formAgregarProducto.addEventListener('submit', e => {
-    e.preventDefault()
-    const producto = leerProductoDelFormulario(e.target)
-    productosApi.post(producto)
-        .then((response) => {
-            if (!response.ok) {
-                response.json().then(({ descripcion }) => {
-                    alert(descripcion)
-                })
-            }
-            actualizarListaProductos()
+  e.preventDefault()
+  const producto = leerProductoDelFormulario(e.target)
+  productosApi.post(producto)
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then(({ descripcion }) => {
+          alert(descripcion)
         })
-        .then(() => {
-            formAgregarProducto.reset()
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+      }
+      actualizarListaProductos()
+    })
+    .then(() => {
+      formAgregarProducto.reset()
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 })
 
 const leerProductoDelFormulario = () => {
-    const formData = new FormData(formAgregarProducto);
-    const { title, price, stock, thumbnail, description } = Object.fromEntries(formData);
+  const formData = new FormData(formAgregarProducto);
+  const { title, price, stock, thumbnail, description } = Object.fromEntries(formData);
 
-    const producto = {
-        title,
-        price,
-        stock,
-        thumbnail,
-        description
-    }
-    return producto
+  const producto = {
+    title,
+    price,
+    stock,
+    thumbnail,
+    description
+  }
+  return producto
 }
 
 const actualizarListaProductos = () => {
-    return productosApi.get()
-        .then(prods => makeHtmlTableProducts(prods))
-        .then(html => {
-            document.getElementById('productos').innerHTML = html
-        })
+  return productosApi.get()
+    .then(prods => makeHtmlTableProducts(prods))
+    .then(html => {
+      document.getElementById('productos').innerHTML = html
+    })
 }
 
 const borrarProducto = (idProd) => {
-    productosApi.delete(idProd)
-        .then((response) => {
-            if (!response.ok) {
-                response.json().then(({ descripcion }) => {
-                    alert(descripcion)
-                })
-            }
-            actualizarListaProductos()
+  productosApi.delete(idProd)
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then(({ descripcion }) => {
+          alert(descripcion)
         })
-        .catch((err) => {
-            console.log(err);
-        })
+      }
+      actualizarListaProductos()
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 const actualizarProducto = (idProd) => {
-    const nuevoProd = leerProductoDelFormulario()
-    productosApi.put(idProd, nuevoProd)
-        .then((response) => {
-            if (!response.ok) {
-                response.json().then(({ descripcion }) => {
-                    alert(descripcion)
-                })
-            }
-            actualizarListaProductos().then(() => {
-                formAgregarProducto.reset()
-            })
+  const nuevoProd = leerProductoDelFormulario()
+  productosApi.put(idProd, nuevoProd)
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then(({ descripcion }) => {
+          alert(descripcion)
         })
-        .catch((err) => {
-            console.log(err);
-        })
+      }
+      actualizarListaProductos().then(() => {
+        formAgregarProducto.reset()
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 const llenarFormulario = (title = '', price = '', stock = '', thumbnail = '', description = '') => {
-    formAgregarProducto[0].value = title
-    formAgregarProducto[1].value = price
-    formAgregarProducto[2].value = stock
-    formAgregarProducto[3].value = thumbnail
-    formAgregarProducto[4].value = description
+  formAgregarProducto[0].value = title
+  formAgregarProducto[1].value = price
+  formAgregarProducto[2].value = stock
+  formAgregarProducto[3].value = thumbnail
+  formAgregarProducto[4].value = description
 }
 
 const makeHtmlTableProducts = (productos) => {
-    let html = `
+  let html = `
         <style>
             .table td,
             .table th {
@@ -127,8 +127,8 @@ const makeHtmlTableProducts = (productos) => {
             }
         </style>`
 
-    if (productos.length > 0) {
-        html += `
+  if (productos.length > 0) {
+    html += `
         <h3 class="text-primary">Product List</h3>
         <div class="table-responsive">
             <table class="table table-default table-striped table-bordered mt-2 align-middle text-center ">
@@ -143,8 +143,8 @@ const makeHtmlTableProducts = (productos) => {
                     </tr>
                 </thead>
                 <tbody>`
-        for (const prod of productos) {
-            html += `
+    for (const prod of productos) {
+      html += `
                     <tr>
                         <td>
                             <a type="button" class="link-primary" onclick="llenarFormulario('${prod.title}', '${prod.price}', '${prod.stock}', '${prod.thumbnail}', '${prod.description}')" title="copiar a formulario...">${prod.title}</a>
@@ -164,13 +164,13 @@ const makeHtmlTableProducts = (productos) => {
                             </button>
                         </td>
                     </tr>`
-        }
-        html += `
+    }
+    html += `
                 </tbody>
             </table>
         </div >`
-    }
-    return Promise.resolve(html)
+  }
+  return Promise.resolve(html)
 }
 
 actualizarListaProductos()

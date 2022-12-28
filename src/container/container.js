@@ -1,9 +1,8 @@
-const fs = require('fs').promises
-import knexConection from '../config'
+import fs from 'fs/promises'
 
 class Container {
-  constructor(table) {
-    this.table = table
+  constructor(path) {
+    this.path = path
   }
 
   async save(obj) {
@@ -24,7 +23,8 @@ class Container {
   async getAll() {
     try {
       const reader = await fs.readFile(this.path, 'utf-8')
-      return knexConection(this.table).select('*').limit(15)
+      const data = JSON.parse(reader)
+      return data
     } catch (e) {
       console.log(e)
     }
@@ -92,4 +92,4 @@ class Container {
   }
 }
 
-module.exports = Container
+export default Container

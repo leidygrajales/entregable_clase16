@@ -6,9 +6,8 @@ const renderMessages = (data) => {
   const htmlMessages = data.map(item => {
     return (`
       <tr>
-        <td scope="row">${item.author}</td>
-        <td scope="row">${item.text}</td>
-        <td scope="row"><small>${item.now}</small></td>
+        <td scope="row">${item.user}</td>
+        <td scope="row">${item.message}</td>
       </tr>
     `)
   }).join(' ')
@@ -25,7 +24,7 @@ const alerMsj = (data) => {
               aria-atomic="true">
               <div class="d-flex">
                 <div class="toast-body">
-                  Nuevo mensaje de:  ${data[data.length - 1].author}
+                  Nuevo mensaje de:  ${data[data.length - 1].user}
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
               </div>
@@ -42,15 +41,14 @@ const alerMsj = (data) => {
 //4.  funcion que se ejecuta cuando doy al btn enviar
 const addMessage = () => {
   const authorName = document.getElementById('author').value
-  const today = new Date();
-  const now = today.toLocaleString();
+  // const today = new Date();
+  // const now = today.toLocaleString();
   const textMsn = document.getElementById('text').value
 
   document.getElementById('text').value = ''
   const mensaje = {
-    author: authorName,
-    now: now,
-    text: textMsn
+    user: authorName,
+    message: textMsn
   }
 
   //enviamos la data al server

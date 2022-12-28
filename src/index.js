@@ -1,14 +1,24 @@
-import ContenedorSQL from './container/contenedorSql'
-import config from './config'
+import express from 'express'
+import { Server as HttpServer } from 'http'
+import multer from 'multer'
+import path from 'path'
+import { Server as IOServer } from 'socket.io'
+import { fileURLToPath } from 'url'
+import ContainerSQL from './container/containerSQL'
 
-const express = require('express')
-const path = require("path")
-const router_productos = require('./routes/products.router')
-const router_carrito = require('./routes/cart.router')
-const multer = require('multer');
+import MySQLOptions from './options/optionsMySQL'
+import SQLite3Options from './options/optionsSQLite3'
+
+import router_carrito from './routes/cart.Router'
+import router_productos from './routes/products.Router'
+
+import initializeMySQL from './script/initializeMySQL'
+import initializeSQLite3 from './script/initializeSQLite3'
+
+await initializeMySQL(MySQLOptions)
+await initializeSQLite3(SQLite3Options)
+
 const upload = multer();
-const { Server: HttpServer } = require('http');
-const { Server: IOServer } = require("socket.io");
 
 const app = express()
 const httpServer = new HttpServer(app);
@@ -16,11 +26,10 @@ const io = new IOServer(httpServer);
 
 const PORT = 8080
 
-const Container = require('./container/container.js')
-const archivo = new Container('./src/productos.json')
+const messagesApi = new ContainerSQL(SQLite3Options, 'messages')
 
-const productsApi = new ContenedorSQL(config.mariaDb, 'products')
-const messagesApi = new ContenedorSQL(config.sqlite3, 'mesagges')
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -49,32 +58,18 @@ app.get('*', function (req, res) {
 })
 
 //conf de socket 
-const messages = []
-
-io.on('connection', socket => {
+io.on('connection', async socket => {
 
   //historial del chat cuando el nuevo cliente se conecte 
-  socket.emit('messages', messages)
 
-  archivo.getAll().then(products => {
-    socket.emit('products', products)
-  })
+  socket.emit('messages', await messagesApi.getAll())
 
   //escuchamos al cliente
-  socket.on('new-message', data => {
-    messages.push(data)
+  socket.on('new-message', async data => {
+    messagesApi.save(data)
 
     //re enviamos por medio de broadcast los msn a todos los clientrs que esten conectados
-    io.sockets.emit('messages', messages)
-  })
-
-  socket.on('new-product', data => {
-    archivo.save(data).then(_ => {
-      archivo.getAll().then(products => {
-        //re enviamos por medio de broadcast los products a todos los clientrs que esten conectados
-        io.sockets.emit('products', products)
-      })
-    })
+    io.sockets.emit('messages', await messagesApi.getAll())
   })
 })
 
